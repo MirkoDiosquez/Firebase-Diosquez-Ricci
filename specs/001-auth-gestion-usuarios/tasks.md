@@ -26,11 +26,11 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 **Objetivo**: Instalar dependencias, configurar Firebase y crear la estructura de carpetas.
 
-- [ ] T001 Instalar dependencias del proyecto: `npm install firebase react-router-dom` y `npm install -D tailwindcss postcss autoprefixer` en la raíz del repo
-- [ ] T002 Inicializar Tailwind CSS: ejecutar `npx tailwindcss init -p` y configurar `content` en `tailwind.config.js` para incluir `./src/**/*.{js,jsx}`
-- [ ] T003 [P] Crear archivo de configuración e inicialización de Firebase en `src/services/firebase.js` (initializeApp, getAuth, getFirestore exportados)
-- [ ] T004 [P] Crear estructura de carpetas según plan.md: `src/context/`, `src/hooks/`, `src/routes/`, `src/services/`, `src/pages/comprador/`, `src/pages/vendedor/`, `src/pages/admin/`, `src/components/forms/`, `src/components/ui/`, `src/scripts/`
-- [ ] T005 Actualizar `src/main.jsx` para importar `index.css` con directivas de Tailwind (`@tailwind base; @tailwind components; @tailwind utilities;`)
+- [x] T001 Instalar dependencias del proyecto: `npm install firebase react-router-dom` y `npm install -D tailwindcss postcss autoprefixer` en la raíz del repo
+- [x] T002 Inicializar Tailwind CSS: instalar `@tailwindcss/vite` (v4), agregar plugin en `vite.config.js` (sin `tailwind.config.js` — v4 no lo requiere)
+- [x] T003 [P] Crear archivo de configuración e inicialización de Firebase en `src/services/firebase.js` (initializeApp, getAuth, getFirestore exportados); crear `.env.example` con las variables `VITE_FIREBASE_*`
+- [x] T004 [P] Crear estructura de carpetas según plan.md: `src/context/`, `src/hooks/`, `src/routes/`, `src/services/`, `src/pages/comprador/`, `src/pages/vendedor/`, `src/pages/admin/`, `src/components/forms/`, `src/components/ui/`, `src/scripts/`, `src/utils/`
+- [x] T005 Actualizar `src/index.css` agregando `@import "tailwindcss";` al inicio del archivo (sintaxis Tailwind v4)
 
 **Checkpoint**: Proyecto arranca con `npm run dev` sin errores. Firebase inicializado.
 
