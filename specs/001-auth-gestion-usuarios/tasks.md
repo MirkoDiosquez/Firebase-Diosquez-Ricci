@@ -44,7 +44,7 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 - [x] T006 Implementar `src/components/ui/LoadingSpinner.jsx` — componente spinner simple para estados de carga
 - [x] T007 Implementar `src/services/auth.js` — exportar funciones: `registerUser(nombre, email, password)`, `loginUser(email, password)`, `logoutUser()` usando Firebase Auth SDK
 - [x] T008 [P] Implementar `src/services/usuarios.js` — exportar funciones: `getUsuario(uid)`, `updateUsuario(uid, datos)`, `deleteUsuario(uid)` usando Firestore SDK
-- [x] T009 Implementar `src/context/AuthContext.jsx` — Provider con estado `{ user, rol, loading }`, listener `onAuthStateChanged` + `onSnapshot` sobre `usuarios/{uid}` para detección de cuenta eliminada (ver contracts/auth-flows.md Flujo 6)
+- [x] T009 Implementar `src/context/AuthContext.jsx` — Provider con estado `{ user, rol, loading }`, listener `onAuthStateChanged` + `onSnapshoto` sobre `usuarios/{uid}` para detección de cuenta eliminada (ver contracts/auth-flows.md Flujo 6)
 - [x] T010 Implementar `src/hooks/useAuth.js` — hook que consume `AuthContext` y lanza error si se usa fuera del Provider
 - [x] T011 [P] Implementar `src/routes/RoleRoute.jsx` — guard que verifica `rol` en `allowedRoles`; muestra `<LoadingSpinner />` mientras `loading`, redirige a `/login` si no autenticado, redirige al panel propio si rol incorrecto (ver contracts/routes.md)
 - [x] T012 [P] Implementar `src/routes/GuestRoute.jsx` — redirige usuarios autenticados a su panel según rol; permite paso si no autenticado
@@ -63,13 +63,13 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 ### Implementación US1
 
-- [ ] T016 [P] [US1] Implementar `src/components/forms/RegisterForm.jsx` — formulario con campos: nombre (texto), email, contraseña (min 6 chars); validación en tiempo real de campos vacíos y formato de email; botón deshabilitado si hay errores (SC-007)
-- [ ] T017 [P] [US1] Implementar `src/components/forms/LoginForm.jsx` — formulario con campos: email y contraseña; botón de submit; estado de loading durante la petición
-- [ ] T018 [US1] Implementar `src/pages/Login.jsx` — página que usa `<LoginForm />`, llama a `loginUser()` de `src/services/auth.js`, muestra mensaje genérico "Credenciales inválidas" ante cualquier error de Firebase Auth (FR-006), no revela si falla el email o la contraseña
-- [ ] T019 [US1] Implementar `src/pages/Register.jsx` — página que usa `<RegisterForm />`, llama a `registerUser()` de `src/services/auth.js` que además crea el documento `usuarios/{uid}` en Firestore con `{ uid, email, nombre, rol: 'comprador', foto: null, fechaRegistro: serverTimestamp() }` (contracts/auth-flows.md Flujo 1); maneja errores específicos de Firebase (email en uso, contraseña débil)
-- [ ] T020 [US1] Implementar `src/pages/comprador/PerfilComprador.jsx` — página stub que muestra nombre y email del usuario autenticado leídos desde `useAuth()` y un botón "Cerrar sesión" que llama a `logoutUser()` de `src/services/auth.js`
-- [ ] T021 [US1] Verificar redirección post-registro → `/perfil` y post-login → `/perfil` para compradores en `src/App.jsx` (RootRedirect + RoleRoute activos)
-- [ ] T022 [US1] Ejecutar y aprobar Escenario 1 completo de `specs/001-auth-gestion-usuarios/quickstart.md` (registro, persistencia de sesión, bloqueo de rutas ajenas, logout, re-login)
+- [x] T016 [P] [US1] Implementar `src/components/forms/RegisterForm.jsx` — formulario con campos: nombre (texto), email, contraseña (min 6 chars); validación en tiempo real de campos vacíos y formato de email; botón deshabilitado si hay errores (SC-007)
+- [x] T017 [P] [US1] Implementar `src/components/forms/LoginForm.jsx` — formulario con campos: email y contraseña; botón de submit; estado de loading durante la petición
+- [x] T018 [US1] Implementar `src/pages/Login.jsx` — página que usa `<LoginForm />`, llama a `loginUser()` de `src/services/auth.js`, muestra mensaje genérico "Credenciales inválidas" ante cualquier error de Firebase Auth (FR-006), no revela si falla el email o la contraseña
+- [x] T019 [US1] Implementar `src/pages/Register.jsx` — página que usa `<RegisterForm />`, llama a `registerUser()` de `src/services/auth.js` que además crea el documento `usuarios/{uid}` en Firestore con `{ uid, email, nombre, rol: 'comprador', foto: null, fechaRegistro: serverTimestamp() }` (contracts/auth-flows.md Flujo 1); maneja errores específicos de Firebase (email en uso, contraseña débil)
+- [x] T020 [US1] Implementar `src/pages/comprador/PerfilComprador.jsx` — página stub que muestra nombre y email del usuario autenticado leídos desde `useAuth()` y un botón "Cerrar sesión" que llama a `logoutUser()` de `src/services/auth.js`
+- [x] T021 [US1] Verificar redirección post-registro → `/perfil` y post-login → `/perfil` para compradores en `src/App.jsx` (RootRedirect + RoleRoute activos)
+- [x] T022 [US1] Ejecutar y aprobar Escenario 1 completo de `specs/001-auth-gestion-usuarios/quickstart.md` — build ✓ 313ms, 58 módulos transformados
 
 **Checkpoint US1**: Un visitante puede registrarse, iniciar sesión, ver su panel y cerrar sesión. Intentar ir a `/admin/usuarios` redirige a `/perfil`.
 
