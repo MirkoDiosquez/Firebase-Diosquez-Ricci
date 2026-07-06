@@ -21,11 +21,12 @@ service cloud.firestore {
       allow read: if request.auth != null
         && (request.auth.uid == uid || esAdmin());
 
-      // Creación: auto-registro como comprador O Admin creando vendedor
+      // Creación: auto-registro como comprador  |  Admin creando vendedor  |  seed del Admin
       allow create: if request.auth != null
         && (
           (request.auth.uid == uid && request.resource.data.rol == 'comprador')
           || (esAdmin() && request.resource.data.rol == 'vendedor')
+          || (request.auth.uid == uid && request.resource.data.rol == 'admin')
         )
         && request.resource.data.keys().hasAll(['uid', 'email', 'nombre', 'rol', 'fechaRegistro']);
 

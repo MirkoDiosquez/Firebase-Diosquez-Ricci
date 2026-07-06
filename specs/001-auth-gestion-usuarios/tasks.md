@@ -113,13 +113,13 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 ### Implementación US3
 
-- [ ] T030 [P] [US3] Implementar `src/scripts/seedAdmin.js` — script standalone (no incluido en el bundle de producción) que crea la cuenta Admin en Firebase Auth y el documento `usuarios/{uid}` con `rol: 'admin'` usando las variables de entorno `VITE_ADMIN_EMAIL` y `VITE_ADMIN_PASSWORD`
-- [ ] T031 [P] [US3] Implementar `src/pages/admin/ListaUsuarios.jsx` — lista todos los documentos de `usuarios` donde `rol != 'admin'` usando query de Firestore; muestra nombre, email y rol de cada usuario; incluye links a detalle y acciones de eliminación
-- [ ] T032 [P] [US3] Implementar `src/pages/admin/DetalleUsuario.jsx` — lee `usuarios/{uid}` y muestra todos los campos del perfil; botón "Eliminar cuenta" solo visible para compradores (FR-017): elimina `usuarios/{uid}` de Firestore (el listener `onSnapshot` del usuario afectado detectará la eliminación y lo desconectará — contracts/auth-flows.md Flujo 5)
-- [ ] T033 [P] [US3] Implementar `src/pages/admin/GestionTiendas.jsx` — lista todas las tiendas de la colección `tiendas`; formulario modal para crear nuevo UsuarioVendedor usando el flujo de re-autenticación del Admin (contracts/auth-flows.md Flujo 4: crear cuenta → crear docs → signOut → re-login del Admin); formulario inline para editar nombre/descripcion/foto; botón eliminar que borra `usuarios/{uid}` + `tiendas/{uid}`
-- [ ] T034 [US3] Verificar en `src/App.jsx` que las rutas `/admin/*` están protegidas con `RoleRoute allowedRoles={['admin']}` y que el Admin es redirigido desde rutas de comprador/vendedor a `/admin/usuarios`
-- [ ] T035 [US3] Ejecutar Escenario 3 de `specs/001-auth-gestion-usuarios/quickstart.md` (login Admin, lista usuarios, crear vendedor, editar tienda, bloqueo de rutas de comprador)
-- [ ] T036 [US3] Ejecutar Escenario 5 de `specs/001-auth-gestion-usuarios/quickstart.md` (eliminar cuenta con sesión activa → verificar desconexión instantánea en menos de 5 segundos)
+- [x] T030 [P] [US3] Implementar `src/scripts/seedAdmin.js` — script standalone (no incluido en el bundle de producción) que crea la cuenta Admin en Firebase Auth y el documento `usuarios/{uid}` con `rol: 'admin'` usando las variables de entorno `VITE_ADMIN_EMAIL` y `VITE_ADMIN_PASSWORD`
+- [x] T031 [P] [US3] Implementar `src/pages/admin/ListaUsuarios.jsx` — lista todos los documentos de `usuarios` donde `rol != 'admin'` usando query de Firestore; muestra nombre, email y rol de cada usuario; incluye links a detalle y acciones de eliminación
+- [x] T032 [P] [US3] Implementar `src/pages/admin/DetalleUsuario.jsx` — lee `usuarios/{uid}` y muestra todos los campos del perfil; botón "Eliminar cuenta" solo visible para compradores (FR-017): elimina `usuarios/{uid}` de Firestore (el listener `onSnapshot` del usuario afectado detectará la eliminación y lo desconectará — contracts/auth-flows.md Flujo 5)
+- [x] T033 [P] [US3] Implementar `src/pages/admin/GestionTiendas.jsx` — lista todas las tiendas de la colección `tiendas`; formulario modal para crear nuevo UsuarioVendedor usando el flujo de re-autenticación del Admin (contracts/auth-flows.md Flujo 4: crear cuenta → crear docs → signOut → re-login del Admin); formulario inline para editar nombre/descripcion/foto; botón eliminar que borra `usuarios/{uid}` + `tiendas/{uid}`
+- [x] T034 [US3] Verificar en `src/App.jsx` que las rutas `/admin/*` están protegidas con `RoleRoute allowedRoles={['admin']}` y que el Admin es redirigido desde rutas de comprador/vendedor a `/admin/usuarios`
+- [x] T035 [US3] Ejecutar Escenario 3 de `specs/001-auth-gestion-usuarios/quickstart.md` (login Admin, lista usuarios, crear vendedor, editar tienda, bloqueo de rutas de comprador)
+- [x] T036 [US3] Ejecutar Escenario 5 de `specs/001-auth-gestion-usuarios/quickstart.md` (eliminar cuenta con sesión activa → verificar desconexión instantánea en menos de 5 segundos)
 
 **Checkpoint US3**: Admin puede gestionar todos los usuarios. La desconexión en tiempo real funciona.
 
