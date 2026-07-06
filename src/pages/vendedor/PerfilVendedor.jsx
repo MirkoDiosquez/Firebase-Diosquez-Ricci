@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { useAuth } from '../../hooks/useAuth'
 import { logoutUser } from '../../services/auth'
 import { db } from '../../services/firebase'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
+import PerfilForm from '../../components/forms/PerfilForm'
 
 export default function PerfilVendedor() {
   const { user } = useAuth()
   const [tienda, setTienda] = useState(null)
   const [cargando, setCargando] = useState(true)
+  const [editando, setEditando] = useState(false)
+  const [guardando, setGuardando] = useState(false)
+  const [errorGuardar, setErrorGuardar] = useState(null)
 
   useEffect(() => {
     if (!user) return
@@ -23,11 +27,26 @@ export default function PerfilVendedor() {
     await logoutUser()
   }
 
+  async function handleGuardar(datos) {
+    setGuardando(true)
+    setErrorGuardar(null)
+    try {
+      // datos: { nombreTienda, descripcion, foto } — uidVendedor NUNCA se modifica
+      await updateDoc(doc(db, 'tiendas', user.uid), datos)
+      setEditando(false)
+    } catch {
+      setErrorGuardar('No se pudo guardar. Intentá de nuevo.')
+    } finally {
+      setGuardando(false)
+    }
+  }
+
   if (cargando) return <LoadingSpinner />
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        {/* Avatar + header */}
         <div className="flex items-center gap-4 mb-6">
           {tienda?.foto ? (
             <img
@@ -48,30 +67,62 @@ export default function PerfilVendedor() {
           </div>
         </div>
 
-        <div className="space-y-3 mb-8">
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Email</p>
-            <p className="text-sm text-gray-700">{user?.email ?? '—'}</p>
-          </div>
-          {tienda?.descripcion && (
-            <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Descripción</p>
-              <p className="text-sm text-gray-700">{tienda.descripcion}</p>
+        {editando ? (
+          <>
+            <PerfilForm
+              modo="vendedor"
+              initialValues={{
+                nombreTienda: tienda?.nombreTienda ?? '',
+                descripcion: tienda?.descripcion ?? '',
+                foto: tienda?.foto ?? '',
+              }}
+              onSubmit={handleGuardar}
+              loading={guardando}
+              error={errorGuardar}
+            />
+            <button
+              onClick={() => { setEditando(false); setErrorGuardar(null) }}
+              className="w-full mt-3 py-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              Cancelar
+            </button>
+          </>
+        ) : (
+          <>
+            {/* Datos de solo lectura */}
+            <div className="space-y-3 mb-6">
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Email</p>
+                <p className="text-sm text-gray-700">{user?.email ?? '—'}</p>
+              </div>
+              {tienda?.descripcion && (
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Descripción</p>
+                  <p className="text-sm text-gray-700">{tienda.descripcion}</p>
+                </div>
+              )}
+              {tienda === null && (
+                <p className="text-sm text-gray-400 italic">
+                  Aún no tenés una tienda registrada.
+                </p>
+              )}
             </div>
-          )}
-          {tienda === null && (
-            <p className="text-sm text-gray-400 italic">
-              Aún no tenés una tienda registrada.
-            </p>
-          )}
-        </div>
 
-        <button
-          onClick={handleLogout}
-          className="w-full py-2.5 rounded-xl bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-colors"
-        >
-          Cerrar sesión
-        </button>
+            <button
+              onClick={() => setEditando(true)}
+              disabled={tienda === null}
+              className="w-full mb-3 py-2.5 rounded-xl bg-orange-50 text-orange-700 text-sm font-semibold hover:bg-orange-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Editar tienda
+            </button>
+            <button
+              onClick={handleLogout}
+              className="w-full py-2.5 rounded-xl bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-colors"
+            >
+              Cerrar sesión
+            </button>
+          </>
+        )}
       </div>
     </div>
   )

@@ -97,10 +97,10 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 ### Implementación US2
 
-- [ ] T026 [P] [US2] Implementar `src/components/forms/PerfilForm.jsx` — formulario reutilizable con campos: nombre (texto), foto (URL de texto, opcional); validación de campo nombre no vacío; emite `onSubmit(datos)` al padre
-- [ ] T027 [US2] Completar `src/pages/comprador/PerfilComprador.jsx` — integrar `<PerfilForm />`, llamar a `updateUsuario(uid, { nombre, foto })` de `src/services/usuarios.js` al guardar; los campos `rol`, `email` y `fechaRegistro` NUNCA se incluyen en el payload de actualización (FR-025)
-- [ ] T028 [US2] Completar `src/pages/vendedor/PerfilVendedor.jsx` — integrar `<PerfilForm />` para editar `nombreTienda`, `descripcion` y `foto` de la tienda; llamar a `updateDoc` sobre `tiendas/{uid}`; el campo `uidVendedor` nunca se modifica
-- [ ] T029 [US2] Ejecutar Escenario 2 de `specs/001-auth-gestion-usuarios/quickstart.md` (edición de perfil comprador, persistencia, aislamiento de datos ajenos) y Escenario 6 (inmutabilidad del campo `rol` vía Firestore Rules)
+- [x] T026 [P] [US2] Implementar `src/components/forms/PerfilForm.jsx` — formulario reutilizable con campos: nombre (texto), foto (URL de texto, opcional); validación de campo nombre no vacío; emite `onSubmit(datos)` al padre
+- [x] T027 [US2] Completar `src/pages/comprador/PerfilComprador.jsx` — integrar `<PerfilForm />`, llamar a `updateUsuario(uid, { nombre, foto })` de `src/services/usuarios.js` al guardar; los campos `rol`, `email` y `fechaRegistro` NUNCA se incluyen en el payload de actualización (FR-025)
+- [x] T028 [US2] Completar `src/pages/vendedor/PerfilVendedor.jsx` — integrar `<PerfilForm />` para editar `nombreTienda`, `descripcion` y `foto` de la tienda; llamar a `updateDoc` sobre `tiendas/{uid}`; el campo `uidVendedor` nunca se modifica
+- [x] T029 [US2] Ejecutar Escenario 2 de `specs/001-auth-gestion-usuarios/quickstart.md` (edición de perfil comprador, persistencia, aislamiento de datos ajenos) y Escenario 6 (inmutabilidad del campo `rol` vía Firestore Rules)
 
 **Checkpoint US2**: Comprador y vendedor pueden editar su perfil. Firestore rechaza escrituras que modifiquen `rol`.
 
