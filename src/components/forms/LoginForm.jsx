@@ -1,12 +1,5 @@
 import { useState } from 'react'
 
-/**
- * Formulario de inicio de sesión (todos los roles).
- * Props:
- *   onSubmit({ email, password }) → async function
- *   loading: boolean
- *   error: string | null  — mensaje de error externo (ej: "Credenciales inválidas")
- */
 export default function LoginForm({ onSubmit, loading, error }) {
   const [campos, setCampos] = useState({ email: '', password: '' })
 
@@ -23,18 +16,19 @@ export default function LoginForm({ onSubmit, loading, error }) {
 
   const deshabilitado = loading || !campos.email || !campos.password
 
+  const inputClass =
+    'w-full border border-gray-200 bg-gray-50 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all'
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-      {/* Mensaje de error genérico — FR-006 */}
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-3 py-2">
-          {error}
+        <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 flex items-center gap-2">
+          <span>⚠️</span> {error}
         </div>
       )}
 
-      {/* Email */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="login-email">
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="login-email">
           Email
         </label>
         <input
@@ -44,14 +38,13 @@ export default function LoginForm({ onSubmit, loading, error }) {
           autoComplete="email"
           value={campos.email}
           onChange={handleChange}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-400"
+          className={inputClass}
           placeholder="tu@email.com"
         />
       </div>
 
-      {/* Contraseña */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="login-password">
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="login-password">
           Contraseña
         </label>
         <input
@@ -61,18 +54,26 @@ export default function LoginForm({ onSubmit, loading, error }) {
           autoComplete="current-password"
           value={campos.password}
           onChange={handleChange}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-400"
-          placeholder="Tu contraseña"
+          className={inputClass}
+          placeholder="••••••••"
         />
       </div>
 
       <button
         type="submit"
         disabled={deshabilitado}
-        className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 text-white font-semibold py-2 rounded-lg transition-colors text-sm"
+        className="w-full bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all shadow-sm text-sm"
       >
-        {loading ? 'Iniciando sesión…' : 'Iniciar sesión'}
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            Iniciando sesión…
+          </span>
+        ) : (
+          'Iniciar sesión'
+        )}
       </button>
     </form>
   )
 }
+

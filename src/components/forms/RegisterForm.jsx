@@ -63,11 +63,13 @@ export default function RegisterForm({ onSubmit, loading }) {
     onSubmit(campos)
   }
 
+  const inputBase = 'w-full bg-gray-50 border rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:ring-2 transition-all'
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
       {/* Nombre */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="reg-nombre">
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="reg-nombre">
           Nombre completo
         </label>
         <input
@@ -78,15 +80,19 @@ export default function RegisterForm({ onSubmit, loading }) {
           value={campos.nombre}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`w-full border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-400 ${errores.nombre ? 'border-red-400' : 'border-gray-300'}`}
+          className={`${inputBase} ${errores.nombre ? 'border-red-400 focus:ring-red-100' : 'border-gray-200 focus:border-orange-400 focus:ring-orange-100'}`}
           placeholder="Juan Pérez"
         />
-        {errores.nombre && <p className="text-red-500 text-xs mt-1">{errores.nombre}</p>}
+        {errores.nombre && (
+          <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+            <span>⚠</span> {errores.nombre}
+          </p>
+        )}
       </div>
 
       {/* Email */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="reg-email">
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="reg-email">
           Email
         </label>
         <input
@@ -97,15 +103,19 @@ export default function RegisterForm({ onSubmit, loading }) {
           value={campos.email}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`w-full border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-400 ${errores.email ? 'border-red-400' : 'border-gray-300'}`}
+          className={`${inputBase} ${errores.email ? 'border-red-400 focus:ring-red-100' : 'border-gray-200 focus:border-orange-400 focus:ring-orange-100'}`}
           placeholder="juan@ejemplo.com"
         />
-        {errores.email && <p className="text-red-500 text-xs mt-1">{errores.email}</p>}
+        {errores.email && (
+          <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+            <span>⚠</span> {errores.email}
+          </p>
+        )}
       </div>
 
       {/* Contraseña */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="reg-password">
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="reg-password">
           Contraseña
         </label>
         <input
@@ -116,19 +126,31 @@ export default function RegisterForm({ onSubmit, loading }) {
           value={campos.password}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`w-full border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-purple-400 ${errores.password ? 'border-red-400' : 'border-gray-300'}`}
+          className={`${inputBase} ${errores.password ? 'border-red-400 focus:ring-red-100' : 'border-gray-200 focus:border-orange-400 focus:ring-orange-100'}`}
           placeholder="Mínimo 6 caracteres"
         />
-        {errores.password && <p className="text-red-500 text-xs mt-1">{errores.password}</p>}
+        {errores.password && (
+          <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+            <span>⚠</span> {errores.password}
+          </p>
+        )}
       </div>
 
       <button
         type="submit"
         disabled={hayErrores() || loading}
-        className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 text-white font-semibold py-2 rounded-lg transition-colors text-sm"
+        className="w-full bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all shadow-sm text-sm"
       >
-        {loading ? 'Creando cuenta…' : 'Crear cuenta'}
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            Creando cuenta…
+          </span>
+        ) : (
+          'Crear cuenta gratis'
+        )}
       </button>
     </form>
   )
 }
+

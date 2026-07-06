@@ -68,51 +68,55 @@ export default function DetalleTienda() {
 
   if (!tienda) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
-        <p className="text-gray-400">Tienda no encontrada.</p>
-        <Link to="/tiendas" className="text-sm text-purple-600 hover:underline">
-          ← Volver
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3 bg-gray-50">
+        <div className="text-5xl">🏪</div>
+        <p className="text-gray-500 font-semibold">Tienda no encontrada.</p>
+        <Link to="/tiendas" className="text-sm text-orange-500 hover:underline font-medium">
+          ← Volver a tiendas
         </Link>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-4">
       <NavComprador />
 
       {/* Header de tienda */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-2xl mx-auto px-4 py-5 flex items-center gap-4">
-          <Link to="/tiendas" className="text-gray-400 hover:text-gray-600 text-sm mr-1">
+      <div className="bg-gradient-to-r from-orange-500 to-rose-500 text-white px-4 pt-5 pb-8">
+        <div className="max-w-2xl mx-auto flex items-center gap-4">
+          <Link to="/tiendas" className="text-orange-100 hover:text-white text-lg mr-1">
             ←
           </Link>
           {tienda.foto ? (
             <img
               src={tienda.foto}
               alt={tienda.nombreTienda}
-              className="w-12 h-12 rounded-xl object-cover"
+              className="w-14 h-14 rounded-xl object-cover shadow-md border-2 border-white/30"
             />
           ) : (
-            <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg">
+            <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center text-white font-extrabold text-2xl shadow-md">
               {tienda.nombreTienda?.[0]?.toUpperCase() ?? '?'}
             </div>
           )}
           <div>
-            <h1 className="font-bold text-gray-800 text-lg">{tienda.nombreTienda}</h1>
-            {tienda.descripcion && (
-              <p className="text-xs text-gray-400">{tienda.descripcion}</p>
+            <h1 className="font-extrabold text-xl tracking-tight">{tienda.nombreTienda}</h1>
+            {tienda.descripcion ? (
+              <p className="text-orange-100 text-sm">{tienda.descripcion}</p>
+            ) : (
+              <p className="text-orange-200 text-xs">{productos.length} productos disponibles</p>
             )}
           </div>
         </div>
       </div>
 
       {/* Productos */}
-      <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="max-w-2xl mx-auto px-4 -mt-4">
         {productos.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-4xl mb-3">🍽️</p>
-            <p className="text-sm">Esta tienda no tiene productos disponibles aún.</p>
+          <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="text-5xl mb-3">🍽️</div>
+            <p className="text-gray-500 font-semibold">Sin productos disponibles</p>
+            <p className="text-gray-400 text-sm mt-1">Esta tienda aún no tiene productos.</p>
           </div>
         ) : (
           <div className="grid gap-3">
@@ -121,42 +125,42 @@ export default function DetalleTienda() {
               return (
                 <div
                   key={p.id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex items-center gap-4"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 flex items-center gap-4 hover:shadow-md transition-shadow"
                 >
                   {p.foto ? (
                     <img
                       src={p.foto}
                       alt={p.nombre}
-                      className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
+                      className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 text-2xl flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-orange-50 flex items-center justify-center text-3xl flex-shrink-0">
                       🍴
                     </div>
                   )}
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-800 text-sm">{p.nombre}</p>
+                    <p className="font-bold text-gray-800 text-sm">{p.nombre}</p>
                     {p.descripcion && (
-                      <p className="text-xs text-gray-400 truncate">{p.descripcion}</p>
+                      <p className="text-xs text-gray-400 truncate mt-0.5">{p.descripcion}</p>
                     )}
-                    <p className="text-purple-700 font-bold text-sm mt-1">
+                    <p className="text-orange-500 font-extrabold text-base mt-1">
                       ${p.precio.toLocaleString('es-AR')}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {enCarrito > 0 && (
-                      <span className="text-xs text-purple-600 font-semibold bg-purple-50 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-orange-600 font-bold bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
                         ×{enCarrito}
                       </span>
                     )}
                     <button
                       onClick={() => handleAgregar(p)}
-                      className={`w-9 h-9 rounded-full text-lg font-bold transition-all flex items-center justify-center ${
+                      className={`w-10 h-10 rounded-full text-lg font-bold transition-all flex items-center justify-center shadow-sm ${
                         agregados[p.id]
                           ? 'bg-green-500 text-white scale-95'
-                          : 'bg-purple-600 hover:bg-purple-700 text-white'
+                          : 'bg-gradient-to-br from-orange-500 to-rose-500 hover:opacity-90 text-white'
                       }`}
                     >
                       {agregados[p.id] ? '✓' : '+'}
