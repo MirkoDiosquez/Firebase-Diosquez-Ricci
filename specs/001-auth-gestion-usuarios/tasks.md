@@ -129,10 +129,10 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 **Objetivo**: Deploy de reglas, revisión de calidad y checklist final del quickstart.
 
-- [ ] T037 Desplegar Firestore Security Rules al proyecto Firebase: `firebase deploy --only firestore:rules` desde la raíz del repo
-- [ ] T038 [P] Ejecutar checklist completo de `specs/001-auth-gestion-usuarios/quickstart.md` (Escenarios 1–6) en el entorno de Firebase real (no emulador)
-- [ ] T039 [P] Revisar que no existen `console.log` de depuración ni código comentado en ningún archivo bajo `src/` antes de merge a `main` (Principio V — Nomenclatura)
-- [ ] T040 Hacer merge a `main` y verificar que GitHub Actions despliega correctamente a Firebase Hosting
+- [x] T037 Desplegar Firestore Security Rules al proyecto Firebase: `firebase deploy --only firestore:rules` desde la raíz del repo
+- [x] T038 [P] Ejecutar checklist completo de `specs/001-auth-gestion-usuarios/quickstart.md` (Escenarios 1–6) en el entorno de Firebase real (no emulador)
+- [x] T039 [P] Revisar que no existen `console.log` de depuración ni código comentado en ningún archivo bajo `src/` antes de merge a `main` (Principio V — Nomenclatura)
+- [x] T040 Hacer merge a `main` y verificar que GitHub Actions despliega correctamente a Firebase Hosting
 
 **Checkpoint Final**: Todos los escenarios de quickstart.md pasan en producción. Deploy automático funcional.
 
