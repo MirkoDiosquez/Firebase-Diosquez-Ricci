@@ -82,9 +82,9 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 
 ### Implementación US4
 
-- [ ] T023 [P] [US4] Implementar `src/pages/vendedor/PerfilVendedor.jsx` — página que muestra los datos de la tienda del vendedor autenticado (leer desde `tiendas/{uid}` con `onSnapshot`); incluye botón "Cerrar sesión"
-- [ ] T024 [US4] Verificar en `src/App.jsx` que `RoleRoute` con `allowedRoles={['vendedor']}` protege `/vendedor/perfil` y que `RootRedirect` redirige a `/vendedor/perfil` para rol vendedor
-- [ ] T025 [US4] Ejecutar Escenario 4 de `specs/001-auth-gestion-usuarios/quickstart.md` (login vendedor, redirección correcta, bloqueo de rutas de comprador y admin)
+- [x] T023 [P] [US4] Implementar `src/pages/vendedor/PerfilVendedor.jsx` — página que muestra los datos de la tienda del vendedor autenticado (leer desde `tiendas/{uid}` con `onSnapshot`); incluye botón "Cerrar sesión"
+- [x] T024 [US4] Verificar en `src/App.jsx` que `RoleRoute` con `allowedRoles={['vendedor']}` protege `/vendedor/perfil` y que `RootRedirect` redirige a `/vendedor/perfil` para rol vendedor
+- [x] T025 [US4] Ejecutar Escenario 4 de `specs/001-auth-gestion-usuarios/quickstart.md` (login vendedor, redirección correcta, bloqueo de rutas de comprador y admin)
 
 **Checkpoint US4**: Vendedor autenticado ve solo su panel; no puede acceder a rutas de otros roles.
 
