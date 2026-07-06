@@ -41,16 +41,16 @@ description: "Task list — Auth & Gestión de Usuarios (3 Roles)"
 **Objetivo**: Infraestructura de autenticación, contexto global y sistema de rutas protegidas.
 **⚠️ CRÍTICO**: Ninguna historia de usuario puede comenzar hasta completar esta fase.
 
-- [ ] T006 Implementar `src/components/ui/LoadingSpinner.jsx` — componente spinner simple para estados de carga
-- [ ] T007 Implementar `src/services/auth.js` — exportar funciones: `registerUser(nombre, email, password)`, `loginUser(email, password)`, `logoutUser()` usando Firebase Auth SDK
-- [ ] T008 [P] Implementar `src/services/usuarios.js` — exportar funciones: `getUsuario(uid)`, `updateUsuario(uid, datos)`, `deleteUsuario(uid)` usando Firestore SDK
-- [ ] T009 Implementar `src/context/AuthContext.jsx` — Provider con estado `{ user, rol, loading }`, listener `onAuthStateChanged` + `onSnapshot` sobre `usuarios/{uid}` para detección de cuenta eliminada (ver contracts/auth-flows.md Flujo 6)
-- [ ] T010 Implementar `src/hooks/useAuth.js` — hook que consume `AuthContext` y lanza error si se usa fuera del Provider
-- [ ] T011 [P] Implementar `src/routes/RoleRoute.jsx` — guard que verifica `rol` en `allowedRoles`; muestra `<LoadingSpinner />` mientras `loading`, redirige a `/login` si no autenticado, redirige al panel propio si rol incorrecto (ver contracts/routes.md)
-- [ ] T012 [P] Implementar `src/routes/GuestRoute.jsx` — redirige usuarios autenticados a su panel según rol; permite paso si no autenticado
-- [ ] T013 [P] Implementar `src/routes/RootRedirect.jsx` — componente que redirige `/` al panel del rol activo o a `/login` si no autenticado
-- [ ] T014 Implementar `src/App.jsx` con `<BrowserRouter>` y todas las rutas definidas en contracts/routes.md (rutas públicas, comprador, vendedor, admin, raíz y 404)
-- [ ] T015 Implementar `firestore.rules` en la raíz del repo con las reglas completas de contracts/firestore-rules.md (colecciones `usuarios` y `tiendas`, helpers `esAdmin()`, `getRol()`)
+- [x] T006 Implementar `src/components/ui/LoadingSpinner.jsx` — componente spinner simple para estados de carga
+- [x] T007 Implementar `src/services/auth.js` — exportar funciones: `registerUser(nombre, email, password)`, `loginUser(email, password)`, `logoutUser()` usando Firebase Auth SDK
+- [x] T008 [P] Implementar `src/services/usuarios.js` — exportar funciones: `getUsuario(uid)`, `updateUsuario(uid, datos)`, `deleteUsuario(uid)` usando Firestore SDK
+- [x] T009 Implementar `src/context/AuthContext.jsx` — Provider con estado `{ user, rol, loading }`, listener `onAuthStateChanged` + `onSnapshot` sobre `usuarios/{uid}` para detección de cuenta eliminada (ver contracts/auth-flows.md Flujo 6)
+- [x] T010 Implementar `src/hooks/useAuth.js` — hook que consume `AuthContext` y lanza error si se usa fuera del Provider
+- [x] T011 [P] Implementar `src/routes/RoleRoute.jsx` — guard que verifica `rol` en `allowedRoles`; muestra `<LoadingSpinner />` mientras `loading`, redirige a `/login` si no autenticado, redirige al panel propio si rol incorrecto (ver contracts/routes.md)
+- [x] T012 [P] Implementar `src/routes/GuestRoute.jsx` — redirige usuarios autenticados a su panel según rol; permite paso si no autenticado
+- [x] T013 [P] Implementar `src/routes/RootRedirect.jsx` — componente que redirige `/` al panel del rol activo o a `/login` si no autenticado
+- [x] T014 Implementar `src/App.jsx` con `<BrowserRouter>` y todas las rutas definidas en contracts/routes.md (rutas públicas, comprador, vendedor, admin, raíz y 404)
+- [x] T015 Implementar `firestore.rules` en la raíz del repo con las reglas completas de contracts/firestore-rules.md (colecciones `usuarios` y `tiendas`, helpers `esAdmin()`, `getRol()`)
 
 **Checkpoint**: La app arranca, muestra `/login` si no autenticado, y los guards redirigen correctamente (verificar con DevTools sin sesión activa).
 
