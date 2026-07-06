@@ -3,8 +3,8 @@ import { useAuth } from '../hooks/useAuth'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 
 const panelPorRol = {
-  comprador: '/perfil',
-  vendedor: '/vendedor/perfil',
+  comprador: '/tiendas',
+  vendedor: '/vendedor/productos',
   admin: '/admin/usuarios',
 }
 

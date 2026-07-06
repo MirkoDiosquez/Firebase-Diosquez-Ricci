@@ -13,6 +13,14 @@ service cloud.firestore {
       return getRol() == 'admin';
     }
 
+    function esVendedor() {
+      return getRol() == 'vendedor';
+    }
+
+    function esComprador() {
+      return getRol() == 'comprador';
+    }
+
     // ─── Colección: usuarios ─────────────────────────────────────────────────
 
     match /usuarios/{uid} {
@@ -47,9 +55,13 @@ service cloud.firestore {
 
     match /tiendas/{tiendaId} {
 
-      // Lectura: Admin O UsuarioVendedor propietario
+      // Lectura: Admin O UsuarioVendedor propietario O Comprador (tiendas activas)
       allow read: if request.auth != null
-        && (esAdmin() || resource.data.uidVendedor == request.auth.uid);
+        && (
+          esAdmin()
+          || resource.data.uidVendedor == request.auth.uid
+          || (esComprador() && resource.data.activo == true)
+        );
 
       // Creación: solo Admin
       allow create: if request.auth != null
@@ -66,6 +78,61 @@ service cloud.firestore {
             && request.resource.data.uidVendedor == resource.data.uidVendedor
             && request.resource.data.fechaCreacion == resource.data.fechaCreacion
           )
+        );
+
+      // Eliminación: solo Admin
+      allow delete: if request.auth != null && esAdmin();
+    }
+
+    // ─── Colección: productos ─────────────────────────────────────────────────
+
+    match /productos/{productoId} {
+
+      // Lectura: cualquier usuario autenticado (compradores necesitan ver el catálogo)
+      allow read: if request.auth != null;
+
+      // Creación: Vendedor propietario de la tienda
+      allow create: if request.auth != null
+        && esVendedor()
+        && request.resource.data.uidTienda == request.auth.uid
+        && request.resource.data.keys().hasAll(['uid', 'uidTienda', 'nombre', 'precio', 'disponible', 'fechaCreacion']);
+
+      // Actualización: Vendedor propietario o Admin (uidTienda inmutable)
+      allow update: if request.auth != null
+        && (
+          esAdmin()
+          || (esVendedor() && resource.data.uidTienda == request.auth.uid)
+        )
+        && request.resource.data.uidTienda == resource.data.uidTienda;
+
+      // Eliminación: Vendedor propietario o Admin
+      allow delete: if request.auth != null
+        && (esAdmin() || (esVendedor() && resource.data.uidTienda == request.auth.uid));
+    }
+
+    // ─── Colección: pedidos ───────────────────────────────────────────────────
+
+    match /pedidos/{pedidoId} {
+
+      // Lectura: comprador propietario O vendedor de la tienda O Admin
+      allow read: if request.auth != null
+        && (
+          resource.data.uidComprador == request.auth.uid
+          || resource.data.uidVendedor == request.auth.uid
+          || esAdmin()
+        );
+
+      // Creación: solo el comprador, para sí mismo
+      allow create: if request.auth != null
+        && esComprador()
+        && request.resource.data.uidComprador == request.auth.uid
+        && request.resource.data.keys().hasAll(['uidComprador', 'uidVendedor', 'items', 'total', 'estado', 'fechaCreacion']);
+
+      // Actualización: vendedor puede actualizar estado; Admin puede todo
+      allow update: if request.auth != null
+        && (
+          esAdmin()
+          || (esVendedor() && resource.data.uidVendedor == request.auth.uid)
         );
 
       // Eliminación: solo Admin

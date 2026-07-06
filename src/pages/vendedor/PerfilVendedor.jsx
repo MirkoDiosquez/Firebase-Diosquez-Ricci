@@ -5,6 +5,7 @@ import { logoutUser } from '../../services/auth'
 import { db } from '../../services/firebase'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 import PerfilForm from '../../components/forms/PerfilForm'
+import NavVendedor from '../../components/ui/NavVendedor'
 
 export default function PerfilVendedor() {
   const { user } = useAuth()
@@ -44,7 +45,9 @@ export default function PerfilVendedor() {
   if (cargando) return <LoadingSpinner />
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10">
+    <div className="min-h-screen bg-gray-50">
+      <NavVendedor />
+      <div className="px-4 py-10">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         {/* Avatar + header */}
         <div className="flex items-center gap-4 mb-6">
@@ -123,6 +126,7 @@ export default function PerfilVendedor() {
             </button>
           </>
         )}
+      </div>
       </div>
     </div>
   )

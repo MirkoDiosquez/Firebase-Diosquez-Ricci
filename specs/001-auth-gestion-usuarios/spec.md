@@ -203,6 +203,83 @@ propia tienda.
 
 ---
 
+### User Story 5 - Catálogo de Tiendas (UsuarioComprador, Priority: P1)
+
+Un UsuarioComprador autenticado puede explorar la lista de tiendas activas y
+acceder al detalle de cada una para ver sus productos.
+
+**Acceptance Scenarios**:
+
+1. **Given** un UsuarioComprador autenticado, **When** navega a `/tiendas`,
+   **Then** ve la lista de tiendas activas con nombre, descripción y logo.
+
+2. **Given** un UsuarioComprador en la lista de tiendas, **When** hace clic
+   en una tienda, **Then** es redirigido al detalle de esa tienda con sus
+   productos disponibles, nombre, precio y foto.
+
+---
+
+### User Story 6 - Carrito y Pedido (UsuarioComprador, Priority: P1)
+
+Un UsuarioComprador puede agregar productos al carrito y confirmar un pedido.
+
+**Acceptance Scenarios**:
+
+1. **Given** un UsuarioComprador en el detalle de una tienda, **When** hace
+   clic en "Agregar" en un producto disponible, **Then** el producto se
+   agrega al carrito (el contador del carrito se actualiza).
+
+2. **Given** un UsuarioComprador intenta agregar productos de otra tienda,
+   **When** confirma vaciar el carrito anterior, **Then** el carrito se
+   reinicia con los nuevos productos.
+
+3. **Given** un UsuarioComprador en `/carrito` con al menos un producto,
+   **When** hace clic en "Confirmar pedido", **Then** se crea un documento
+   en `pedidos` con estado `pendiente`, se vacía el carrito y es redirigido
+   a `/mis-pedidos`.
+
+4. **Given** un UsuarioComprador en `/mis-pedidos`, **When** visualiza la
+   pantalla, **Then** ve sus pedidos ordenados del más reciente al más
+   antiguo con estado, nombre de tienda, items y total.
+
+---
+
+### User Story 7 - Gestión de Productos (UsuarioVendedor, Priority: P1)
+
+Un UsuarioVendedor puede agregar, editar, deshabilitar y eliminar los
+productos de su tienda.
+
+**Acceptance Scenarios**:
+
+1. **Given** un UsuarioVendedor en `/vendedor/productos`, **When** completa
+   el formulario de nuevo producto (nombre, precio), **Then** el producto se
+   agrega a su tienda y aparece en el catálogo para compradores.
+
+2. **Given** un UsuarioVendedor, **When** edita un producto existente o
+   cambia su disponibilidad, **Then** los cambios se reflejan de inmediato
+   en el catálogo.
+
+3. **Given** un UsuarioVendedor, **When** elimina un producto, **Then** ese
+   producto deja de aparecer para los compradores.
+
+---
+
+### User Story 8 - Gestión de Pedidos (UsuarioVendedor, Priority: P1)
+
+Un UsuarioVendedor puede ver los pedidos entrantes y actualizar su estado.
+
+**Acceptance Scenarios**:
+
+1. **Given** un UsuarioVendedor en `/vendedor/pedidos`, **When** ve la lista,
+   **Then** ve todos los pedidos de su tienda ordenados por fecha, con items
+   y total.
+
+2. **Given** un UsuarioVendedor con un pedido en estado `pendiente`, **When**
+   actualiza el estado, **Then** el cambio se refleja en tiempo real para el
+   comprador.
+
+---
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -283,6 +360,38 @@ propia tienda.
   intente modificar el valor del campo `rol` en el documento propio, incluso
   si el resto de los campos de perfil son editables por el usuario.
 
+**Catálogo y carrito:**
+
+- **FR-027**: Un UsuarioComprador DEBE poder ver la lista de todas las tiendas
+  con `activo: true`.
+- **FR-028**: Un UsuarioComprador DEBE poder ver los productos `disponible: true`
+  de una tienda y agregarlos al carrito.
+- **FR-029**: El carrito solo puede contener productos de una misma tienda.
+  Si el comprador agrega un producto de otra tienda, el sistema DEBE preguntarle
+  si desea vaciar el carrito y reemplazarlo.
+- **FR-030**: El carrito DEBE persistir en `localStorage` para sobrevivir
+  recargas de página.
+- **FR-031**: Un UsuarioComprador DEBE poder confirmar el carrito y crear un
+  pedido con estado `pendiente` en Firestore. Al confirmar, el carrito se vacía.
+- **FR-032**: Un UsuarioComprador DEBE poder ver su historial de pedidos
+  ordenado por fecha descendente.
+
+**Gestión de productos (Vendedor):**
+
+- **FR-033**: Un UsuarioVendedor DEBE poder crear productos en su tienda
+  (nombre requerido, precio requerido, descripción y foto opcionales).
+- **FR-034**: Un UsuarioVendedor DEBE poder editar y eliminar sus propios
+  productos.
+- **FR-035**: Un UsuarioVendedor DEBE poder cambiar la disponibilidad
+  (`disponible: true/false`) de un producto sin eliminarlo.
+
+**Gestión de pedidos (Vendedor):**
+
+- **FR-036**: Un UsuarioVendedor DEBE poder ver todos los pedidos recibidos
+  en su tienda ordenados por fecha descendente.
+- **FR-037**: Un UsuarioVendedor DEBE poder actualizar el estado de un pedido
+  (`pendiente` → `confirmado` → `en_camino` → `entregado` | `cancelado`).
+
 ### Key Entities
 
 - **Usuario**: Representa a toda cuenta del sistema. Atributos: identificador
@@ -293,6 +402,14 @@ propia tienda.
   Relación 1:1 con un Usuario de rol UsuarioVendedor.
 - **Sesión**: Representa el estado de autenticación activo de un usuario.
   No se persiste explícitamente; la gestiona el proveedor de autenticación.
+- **Producto**: Ítem del catálogo de una tienda. Atributos: uid, uidTienda,
+  nombre, descripción, precio, foto, disponible, fechaCreacion.
+- **Pedido**: Orden de compra creada por un UsuarioComprador. Atributos:
+  uid, uidComprador, uidVendedor, nombreTienda, items (array), total, estado,
+  fechaCreacion, fechaActualizacion. Estados: `pendiente` | `confirmado` |
+  `en_camino` | `entregado` | `cancelado`.
+- **Carrito**: Estado temporal del lado del cliente. Se persiste en
+  `localStorage`. Contiene uidTienda, nombreTienda y array de ítems.
 
 ---
 

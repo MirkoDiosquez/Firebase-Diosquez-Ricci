@@ -122,9 +122,9 @@ usuarios/{uid}
 tiendas/{tiendaId}
     │ tiendaId (referencia)
     ▼
-productos/{productoId}     ← fuera del scope de esta feature
+productos/{productoId}     ← colección de productos por tienda
     │
-pedidos/{pedidoId}         ← fuera del scope de esta feature
+pedidos/{pedidoId}         ← ordenes creadas por compradores
 ```
 
 ---
@@ -175,3 +175,40 @@ pedidos/{pedidoId}         ← fuera del scope de esta feature
 | `tiendas` | `read` | Admin ó UsuarioVendedor propietario | `uidVendedor == request.auth.uid` ó `rol == 'admin'` |
 | `tiendas` | `update` | Admin ó UsuarioVendedor propietario | `uidVendedor` inmutable |
 | `tiendas` | `delete` | Solo Admin | — |
+
+---
+
+## Colección: `productos`
+
+**Ruta**: `/productos/{productoId}`
+**Descripción**: Ítems del catálogo de una tienda. ID autogenerado por Firestore.
+
+| Campo | Tipo | Obligatorio | Inmutable | Descripción |
+|---|---|:---:|:---:|---|
+| `uid` | `string` | ✓ | ✓ | ID del documento (autogenerado) |
+| `uidTienda` | `string` | ✓ | ✓ | UID del vendedor propietario |
+| `nombre` | `string` | ✓ | ✗ | Nombre del producto |
+| `descripcion` | `string` | ✗ | ✗ | Descripción del producto |
+| `precio` | `number` | ✓ | ✗ | Precio en pesos |
+| `foto` | `string` | ✗ | ✗ | URL de imagen |
+| `disponible` | `boolean` | ✓ | ✗ | `true` = visible para compradores |
+| `fechaCreacion` | `timestamp` | ✓ | ✓ | Timestamp de creación |
+
+---
+
+## Colección: `pedidos`
+
+**Ruta**: `/pedidos/{pedidoId}`
+**Descripción**: Órdenes de compra creadas por compradores. ID autogenerado.
+
+| Campo | Tipo | Obligatorio | Inmutable | Descripción |
+|---|---|:---:|:---:|---|
+| `uid` | `string` | ✓ | ✓ | ID del documento |
+| `uidComprador` | `string` | ✓ | ✓ | UID del comprador |
+| `uidVendedor` | `string` | ✓ | ✓ | UID del vendedor (= uidTienda) |
+| `nombreTienda` | `string` | ✓ | ✓ | Denormalizado para display |
+| `items` | `array` | ✓ | ✓ | Array de `{productoId, nombre, precio, cantidad, subtotal}` |
+| `total` | `number` | ✓ | ✓ | Suma total del pedido |
+| `estado` | `string` | ✓ | ✗ | `pendiente` \| `confirmado` \| `en_camino` \| `entregado` \| `cancelado` |
+| `fechaCreacion` | `timestamp` | ✓ | ✓ | Timestamp de creación |
+| `fechaActualizacion` | `timestamp` | ✓ | ✗ | Última modificación de estado |
